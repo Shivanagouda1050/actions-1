@@ -1,19 +1,29 @@
-name: My 1st workflow
+# 👋 Name of this workflow (appears in GitHub Actions tab)
+name: My First Workflow  
 
-on: push
+# ⚡ Trigger: This workflow runs whenever you push code to the repo
+on: push  
 
 jobs:
-  first_job: 
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3   # <-- pulls repo files
+  first_job:
+    runs-on: ubuntu-latest  
 
-      - name: welcome message
-        run: echo "my 1st github actions"
-      
-      - name: list files
-        run: ls -R   # list everything to see structure
-      
-      - name: Read file
-        run: cat README.md   # <-- correct path
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4   # pulls your repo code to $GITHUB_WORKSPACE
+
+      - name: List and Read file
+        run: |
+          echo "My first Github Actions Job"   # print a message
+          ls -ltra                            # list files with details (long format, sorted by time)
+          cat README.md                       # print contents of README.md
+
+      - name: Generate ASCII Artwork
+        run: |
+          sudo apt-get install -y cowsay        # install cowsay (not pre-installed on GitHub runner)
+          cowsay -f dragon "Run for cover, I am a DRAGON .... RAWR" >> dragon.txt
+          cat dragon.txt                        # display the file to confirm it worked
+
+      # ✅ Step 4: Just list files again to check if dragon.txt is created
+      - name: List files again
+        run: ls -ltra
