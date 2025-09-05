@@ -13,4 +13,4 @@ jobs:
         run: ls
       
       - name: Read file
-        run: cat shiva.md
+        run: cat Shivanagouda1050/actions-1/README.md
