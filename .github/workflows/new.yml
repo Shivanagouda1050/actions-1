@@ -1,16 +1,19 @@
 name: My 1st workflow
 
-on: push # whenever I push to this repository, this workflow executes
+on: push
 
 jobs:
   first_job: 
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3   # <-- pulls repo files
+
       - name: welcome message
         run: echo "my 1st github actions"
       
       - name: list files
-        run: ls
+        run: ls -R   # list everything to see structure
       
       - name: Read file
-        run: cat Shivanagouda1050/actions-1/README.md
+        run: cat README.md   # <-- correct path
