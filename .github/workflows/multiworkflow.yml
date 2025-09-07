@@ -1,79 +1,46 @@
-name: CI/CD with Cowsay + Artifacts
+name: Env Variables Example
 
 on: push
 
 jobs:
-  # -----------------------
-  # Job 1: Build
-  # -----------------------
   build:
     runs-on: ubuntu-latest
+    
+    # 👇 Job-level env (available to all steps in this job)
+    env:
+      APP_ENV: development
+      BUILD_VERSION: v1.0.0
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install cowsay
-        run: sudo apt-get install -y cowsay
+      - name: Print env vars
+        run: |
+          echo "Environment: $APP_ENV"
+          echo "Build Version: $BUILD_VERSION"
 
-      - name: Build step (cowsay)
-        run: cowsay "✅ Building the project..." > build.txt
+      - name: Use env in cowsay
+        run: |
+          sudo apt-get install -y cowsay
+          cowsay "Building $APP_ENV version $BUILD_VERSION" > build.txt
 
-      - name: Upload build artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: build-output
-          path: build.txt   # save this file for later jobs
+          path: build.txt
 
-  # -----------------------
-  # Job 2: Test
-  # -----------------------
   test:
     runs-on: ubuntu-latest
     needs: build
+    
+    env:
+      APP_ENV: testing
+      TEST_SUITE: unit-tests
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build-output   # download what we saved in "build"
-
-      - name: Install cowsay
-        run: sudo apt-get install -y cowsay
-
-      - name: Test step (cowsay)
-        run: cowsay "🧪 Running tests after build!" > test.txt
-
-      - name: Upload test artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-output
-          path: test.txt
-
-  # -----------------------
-  # Job 3: Deploy
-  # -----------------------
-  deploy:
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download test artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: test-output
-
-      - name: Install cowsay
-        run: sudo apt-get install -y cowsay
-
-      - name: Deploy step (cowsay)
-        run: cowsay -f dragon "🚀 Deploying after tests passed!" > deploy.txt
-
-      - name: Upload deploy artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: deploy-output
-          path: deploy.txt
+      - name: Print test env vars
+        run: |
+          echo "Running $APP_ENV environment"
+          echo "Test Suite: $TEST_SUITE"
