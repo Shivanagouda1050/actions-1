@@ -1,6 +1,6 @@
-name: Simple CI/CD Workflow   # 👋 Name shown in GitHub Actions tab
+name: CI/CD with Cowsay + Artifacts
 
-on: push   # ⚡ Runs whenever you push to repo
+on: push
 
 jobs:
   # -----------------------
@@ -12,31 +12,68 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build step
-        run: echo "✅ Building the project..."
+      - name: Install cowsay
+        run: sudo apt-get install -y cowsay
+
+      - name: Build step (cowsay)
+        run: cowsay "✅ Building the project..." > build.txt
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: build.txt   # save this file for later jobs
 
   # -----------------------
   # Job 2: Test
   # -----------------------
   test:
     runs-on: ubuntu-latest
-    needs: build          # This waits until "build" finishes
+    needs: build
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Test step
-        run: echo "🧪 Running tests..."
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output   # download what we saved in "build"
+
+      - name: Install cowsay
+        run: sudo apt-get install -y cowsay
+
+      - name: Test step (cowsay)
+        run: cowsay "🧪 Running tests after build!" > test.txt
+
+      - name: Upload test artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output
+          path: test.txt
 
   # -----------------------
   # Job 3: Deploy
   # -----------------------
   deploy:
     runs-on: ubuntu-latest
-    needs: test           # This waits until "test" finishes
+    needs: test
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy step
-        run: echo "🚀 Deploying application..."
+      - name: Download test artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: test-output
+
+      - name: Install cowsay
+        run: sudo apt-get install -y cowsay
+
+      - name: Deploy step (cowsay)
+        run: cowsay -f dragon "🚀 Deploying after tests passed!" > deploy.txt
+
+      - name: Upload deploy artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-output
+          path: deploy.txt
