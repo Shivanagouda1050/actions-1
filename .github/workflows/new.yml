@@ -1,5 +1,5 @@
 # 👋 Name of this workflow (appears in GitHub Actions tab)
-name: Disabled
+name: Disabled!
 
 # ⚡ Trigger: This workflow runs whenever you push code to the repo
 on: push  
