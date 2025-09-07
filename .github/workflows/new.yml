@@ -1,26 +1,33 @@
-# 👋 Name of this workflow (appears in GitHub Actions tab)
+# 👋 Name of this workflow (this will show up in GitHub Actions UI)
 name: shell script
 
-# ⚡ Trigger: This workflow runs whenever you push code to the repo
+# ⚡ Trigger: This workflow runs every time you push code to the repo
 on: push  
 
 jobs:
-  shell_script_added:
-    runs-on: ubuntu-latest  
+  shell_script_added:          # Name of the job (you can have multiple jobs in one workflow)
+    runs-on: ubuntu-latest     # The job runs inside a fresh Ubuntu VM hosted by GitHub
 
-    steps:
+    steps:                     # A job is made up of steps (executed one by one)
+      # Step 1: Checkout the repository into the runner
       - name: Checkout Repo
-        uses: actions/checkout@v4   # pulls your repo code to $GITHUB_WORKSPACE
+        uses: actions/checkout@v4   # Official GitHub Action that pulls your repo files into the VM
 
+      # Step 2: Run some basic shell commands
       - name: List and Read file
         run: |
-          echo "My first Github Actions Job"   # print a message
-          ls -ltra                            # list files with details (long format, sorted by time)
-          cat README.md                       # print contents of README.md
+          echo "My first Github Actions Job"  # Print a welcome message
+          ls -ltra                            # List all files in current directory (detailed view, sorted by time)
+          cat README.md                       # Display contents of README.md file
 
-      - name: Generate ASCII Artwork
-        run: .github/workflows/samplescript.sh                     # display the file to confirm it worked
+      # Step 3: Make sure our script has execution permissions
+      - name: Make script executable
+        run: chmod +x .github/workflows/samplescript.sh   # Add +x (execute) permission
 
-      # ✅ Step 4: Just list files again to check if dragon.txt is created
+      # Step 4: Run the custom shell script
+      - name: Run my shell script
+        run: ./.github/workflows/samplescript.sh   # Execute the script using relative path
+
+      # Step 5: List files again (useful to check if script created new files like dragon.txt)
       - name: List files again
         run: ls -ltra
