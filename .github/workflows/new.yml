@@ -5,7 +5,7 @@ name: shell script
 on: push  
 
 jobs:
-  Disabled:
+  shell script added:
     runs-on: ubuntu-latest  
 
     steps:
