@@ -19,7 +19,7 @@ jobs:
           cat README.md                       # print contents of README.md
 
       - name: Generate ASCII Artwork
-        run: Shivanagouda1050/actions-1/.github/workflows/samplescript.sh                       # display the file to confirm it worked
+        run: .github/workflows/samplescript.sh                     # display the file to confirm it worked
 
       # ✅ Step 4: Just list files again to check if dragon.txt is created
       - name: List files again
