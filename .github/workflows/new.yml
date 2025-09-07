@@ -21,7 +21,7 @@ jobs:
       - name: Generate ASCII Artwork
         run: |
           sudo apt-get install -y cowsay        # install cowsay (not pre-installed on GitHub runner)
-          cowsay -f dragon "Run for cover, I am a DRAGON .... RAWR" >> dragon.txt
+          cowsay -f dragon "Run for cover, I am a DRAGON .... yeah!!!" >> dragon.txt
           cat dragon.txt                        # display the file to confirm it worked
 
       # ✅ Step 4: Just list files again to check if dragon.txt is created
