@@ -3,7 +3,7 @@ name: My First Workflow
 
 # ⚡ Trigger: This workflow runs whenever you push code to the repo
 on: push  
-
+        
 jobs:
   first_job:
     runs-on: ubuntu-latest  
