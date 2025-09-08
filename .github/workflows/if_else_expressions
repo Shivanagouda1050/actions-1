@@ -8,7 +8,7 @@ jobs:
 
     steps:
       # ✅ Step 1: Checkout repo
-      - name: Checkout repo
+      - name: Checkout repo1
         uses: actions/checkout@v4
 
       # ✅ Step 2: Install cowsay
