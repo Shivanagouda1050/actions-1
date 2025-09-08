@@ -1,0 +1,42 @@
+# 👋 Name of this workflow (appears in Actions tab)
+name: Context Aware Demo
+
+# ⚡ Trigger: Run this workflow whenever someone pushes code
+on: push
+
+jobs:
+  show-context:
+    runs-on: ubuntu-latest   # Use Ubuntu runner
+
+    steps:
+      # ✅ Step 1: Checkout the repository
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # ✅ Step 2: Show GitHub context info
+      - name: Show GitHub context
+        run: |
+          echo "Repository: ${{ github.repository }}"   # e.g. user/repo
+          echo "Branch/Ref: ${{ github.ref }}"          # e.g. refs/heads/main
+          echo "Commit SHA: ${{ github.sha }}"          # unique commit id
+          echo "Triggered by: ${{ github.actor }}"      # who pushed the code
+
+      # ✅ Step 3: Show Runner context
+      - name: Show Runner context
+        run: |
+          echo "Runner OS: ${{ runner.os }}"            # Linux / Windows / macOS
+          echo "Runner Architecture: ${{ runner.arch }}" # x64, ARM etc.
+
+      # ✅ Step 4: Use Environment variable (custom + context)
+      - name: Custom environment variable
+        env:
+          MY_ENV: "This is my variable"                # define custom env
+        run: |
+          echo "Env var = $MY_ENV"
+          echo "Repo name from context = ${{ github.repository }}"
+
+      # ✅ Step 5: Fun cowsay using context
+      - name: Cowsay Context
+        run: |
+          sudo apt-get install -y cowsay
+          cowsay "Hello ${{ github.actor }} pushed to ${{ github.ref }}"
