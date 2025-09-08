@@ -1,0 +1,35 @@
+name: Cowsay If Else Demo
+
+on: push
+
+jobs:
+  cowsay-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ✅ Step 1: Checkout repo
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # ✅ Step 2: Install cowsay
+      - name: Install cowsay
+        run: sudo apt-get install -y cowsay
+
+      # ✅ Step 3: Always runs (context info)
+      - name: Show who triggered workflow
+        run: echo "Hello ${{ github.actor }} pushed to branch ${{ github.ref }}"
+
+      # ✅ Step 4: Run only on main branch
+      - name: Dragon says hi (main branch)
+        if: github.ref == 'refs/heads/main'   # 🎯 only runs on main
+        run: cowsay -f dragon "Deploying from MAIN branch 🐉"
+
+      # ✅ Step 5: Run only on feature branches
+      - name: Cow says hi (feature branch)
+        if: startsWith(github.ref, 'refs/heads/feature/')
+        run: cowsay "Working on a feature branch 🐮"
+
+      # ✅ Step 6: Run if not on main (like dev/testing)
+      - name: Ghostbusters for non-main
+        if: github.ref != 'refs/heads/main'
+        run: cowsay -f ghostbusters "Not main branch → this is just testing 👻"
